@@ -1,0 +1,21 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito|sriracha');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+
+// .dine-in-font.color {
+//     color: #ffffff;
+// }
+
+.dine-in-font.primary-color {
+    color: #F2CC8F;
+}
+
+.dine-in-font.display {
+    font-family: 'sriracha', sans-serif;
+}
