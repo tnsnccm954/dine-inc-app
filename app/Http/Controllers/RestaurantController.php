@@ -10,12 +10,7 @@ use Illuminate\Http\Request;
 class RestaurantController extends Controller
 {
     protected $restaurantService;
-    // protected $googleMapService;
-    // public function __construct(GoogleMapService $googleMapService)
-    // {
-    //     $this->googleMapService = $googleMapService;
-    // }
-
+    
     public  function __construct(RestaurantService $restaurantService)
     {
         $this->restaurantService = $restaurantService;
@@ -67,9 +62,15 @@ class RestaurantController extends Controller
     {
         $params = $request->validate([
             'name' => 'required|string',
-            'place_id' => 'required|string',
+            'description' => 'sometimes|string',
+            'place_id' => 'sometimes|string|unique:restaurants,place_id',
+            'location' => 'sometimes|array',
+            'location.lat' => 'required_with:location|numeric',
+            'location.lng' => 'required_with:location|numeric',
+            'is_active' => 'sometimes|boolean',
             ]);
-        
+        $restaurant = Restaurant::create($params);
+        return response()->json($restaurant);
     }
 
     /**
@@ -77,7 +78,7 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
+        return response()->json($restaurant);
     }
 
     /**
@@ -85,7 +86,17 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        
+        $params = $request->validate([
+            'name' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'place_id' => 'sometimes|string|unique:restaurants,place_id,'.$restaurant->id,
+            'location' => 'sometimes|array',
+            'location.lat' => 'required_with:location|numeric',
+            'location.lng' => 'required_with:location|numeric',
+            'is_active' => 'sometimes|boolean',
+        ]);
+        $restaurant->update($params);
+        return response()->json($restaurant->fresh());
     }
 
     /**
@@ -93,6 +104,7 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        $restaurant->delete();
+        return response()->json(['message' => 'Restaurant deleted successfully']);
     }
 }
