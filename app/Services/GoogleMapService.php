@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\GoogleMapService as GoogleMapIService;
+use App\Http\Helpers\CacheHelper;
 use GuzzleHttp\Client;
 
 class GoogleMapService implements GoogleMapIService
@@ -19,6 +20,24 @@ class GoogleMapService implements GoogleMapIService
         $this->baseLat = env('GOOGLE_MAPS_BASE_LATITUDE');
         $this->baseLng = env('GOOGLE_MAPS_BASE_LONGITUDE');
         $this->client = $client;
+    }
+
+    public function getDefaultLocation()
+    {
+        return [
+            'latitude' => $this->baseLat,
+            'longitude' => $this->baseLng,
+        ];
+    }
+
+    private function get($baseUrl, $options = [])
+    {
+        $key = isset($options['query']) ? CacheHelper::generateKey($options['query']) : $baseUrl;
+        
+        return CacheHelper::remember($key, null, function () use ($baseUrl, $options) {
+            $response = $this->client->get($baseUrl, $options);
+            return json_decode($response->getBody(), true);
+        });
     }
 
     public function nearbySearch($latitude = null, $longitude = null, $radius = 5000, $params = [])
@@ -39,9 +58,9 @@ class GoogleMapService implements GoogleMapIService
         //     $params['keyword'] = $keyword;
         // }
 
-        $response = $this->client->get($baseUrl, ['query' => [...$baseParams, ...$params]]);
-        $data = json_decode($response->getBody(), true);
-
+        // $response = $this->client->get($baseUrl, ['query' => [...$baseParams, ...$params]]);
+        // $data = json_decode($response->getBody(), true);
+        $data = $this->get($baseUrl, ['query' => [...$baseParams, ...$params]]);
         return $data;
     }
 
@@ -81,7 +100,7 @@ class GoogleMapService implements GoogleMapIService
         return $data;
     }
 
-    public function getPlaceDetails($placeId)
+    public function getPlaceDetail($placeId)
     {
         $baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json';
         $params = [

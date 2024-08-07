@@ -3,15 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\GoogleMapService;
+use App\Models\Restaurant;
+use App\Services\RestaurantService;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
+    protected $restaurantService;
+    // protected $googleMapService;
+    // public function __construct(GoogleMapService $googleMapService)
+    // {
+    //     $this->googleMapService = $googleMapService;
+    // }
 
-    protected $googleMapService;
-    public function __construct(GoogleMapService $googleMapService)
+    public  function __construct(RestaurantService $restaurantService)
     {
-        $this->googleMapService = $googleMapService;
+        $this->restaurantService = $restaurantService;
     }
 
     /**
@@ -36,6 +43,9 @@ class RestaurantController extends Controller
             'food_type' => 'sometimes|string|exists:food_types,name',
             'food_types' => 'sometimes|array|min:1',
             'food_types.*' => 'string|exists:food_types,name',
+
+            'with_relationships' => 'sometimes|array|min:1',
+            'with_relationships.*' => 'string|in:menus',
         ]);
 
         $lat = $params['lat'] ?? null;
@@ -43,9 +53,10 @@ class RestaurantController extends Controller
         $radius = $params['radius'] ?? 5000;
         unset($params['lat'], $params['lng'], $params['radius']);
 
-        $response = $this->googleMapService->nearbySearch($lat, $lng, $radius, $params);
+        $restaurants = $this->restaurantService->getNearbyRestaurants($params, $lat, $lng, $radius);
+        // $response = $this->googleMapService->nearbySearch($lat, $lng, $radius, $params);
 
-        return response()->json($response);
+        return response()->json($restaurants);
 
     }
 
@@ -54,13 +65,17 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $params = $request->validate([
+            'name' => 'required|string',
+            'place_id' => 'required|string',
+            ]);
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Restaurant $restaurant)
     {
         //
     }
@@ -68,15 +83,15 @@ class RestaurantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Restaurant $restaurant)
     {
         //
     }

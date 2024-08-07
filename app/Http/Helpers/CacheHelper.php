@@ -15,10 +15,12 @@ class CacheHelper
      * @param \Closure $callback
      * @return mixed
      */
-    public static function remember(string $key, int $minutes = config('cache.lifetime'), \Closure $callback)
+    public static function remember(string $key, ?int $minutes = null, \Closure $callback)
     {   
         $key = config('cache.prefix') . $key;
-        return Cache::remember($key, $minutes, $callback);
+        $minutes = $minutes ?? config('cache.lifetime');
+
+        return config('cache.enable') ? Cache::remember($key, $minutes, $callback) : $callback();
     }
 
     /**
@@ -29,8 +31,14 @@ class CacheHelper
      * @param int $minutes
      * @return void
      */
-    public static function put(string $key, $value, int $minutes = config('cache.lifetime'))
+    public static function put(string $key, $value, ?int $minutes = null)
     {
+        $minutes = $minutes ?? config('cache.lifetime');
         Cache::put($key, $value, $minutes);
+    }
+
+    public static function generateKey(array $params)
+    {
+        return http_build_query($params);
     }
 }
