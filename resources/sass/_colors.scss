@@ -1,0 +1,73 @@
+
+.bg-inherit {
+    background-color: inherit !important;
+}
+
+.bg-app-dark {
+    background-color: $app-dark !important;
+}
+
+.bg-app-black {
+    background-color: $app-black !important;
+}
+
+.bg-app-primary {
+    background-color: $app-primary !important;
+}
+
+.bg-app-sub-primary {
+    background-color: $app-sub-primary !important;
+}
+
+.bg-gray {
+    background-color: $gray !important;
+}
+
+.bg-negative {
+    background-color: $negative !important;
+}
+
+.bg-positive {
+    background-color: $positive !important;
+}
+
+.bg-sub-gray {
+    background-color: $sub-gray !important;
+}
+
+.color-app-black {
+    color: $app-black !important;
+}
+
+.color-app-dark {
+    color: $app-dark !important;
+}
+
+.color-primary {
+    color: $app-primary !important;
+}
+
+.color-sub-primary {
+    color: $app-sub-primary !important;
+}
+
+.color-gray {
+    color: $gray !important;
+}
+
+.color-negative {
+    color: $negative !important;
+}
+
+.color-positive {
+    color: $positive !important;
+}
+
+.color-sub-gray {
+    color: $sub-gray !important;
+}
+
+.btn-outline-app-primary {
+    color: $app-primary;
+    border-color: $app-primary;
+}

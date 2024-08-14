@@ -54,6 +54,11 @@ class GoogleMapService implements GoogleMapIService
             'type' => 'restaurant|cafe|food',
         ];
 
+        // if(key_exists('per_page', $params)) {
+        //     $baseParams['per_page'] = $params['per_page'];
+        //     unset($params['per_page']);
+        // }
+
         // if ($keyword) {
         //     $params['keyword'] = $keyword;
         // }

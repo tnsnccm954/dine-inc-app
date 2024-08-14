@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito|sriracha');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Thai:wght@100..900&family=Noto+Serif+Thai:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Sriracha&display=swap');
 
 // Variables
 @import 'variables';
@@ -8,14 +8,34 @@
 @import 'bootstrap/scss/bootstrap';
 
 
+// Custom styles
+@import 'colors';
+
 // .dine-in-font.color {
 //     color: #ffffff;
 // }
 
 .dine-in-font.primary-color {
-    color: #F2CC8F;
+    color: $app-primary;
 }
 
 .dine-in-font.display {
-    font-family: 'sriracha', sans-serif;
+    font-family: 'Sriracha','Noto Sans Display', cursive;
+}
+
+* {
+    font-family: 'Noto Sans Thai','Noto Serif', sans-serif;
+    // font-size: 1rem;
+    // color: ;
+}
+
+body {
+    background-color: $app-primary;
+    color: $app-dark;
+    line-height: 1.6;
+}
+
+header {
+    background-color: $app-dark;
+    color: $app-primary;
 }

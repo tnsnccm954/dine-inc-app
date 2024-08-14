@@ -24,6 +24,12 @@ class Restaurant extends Model
         'location' => 'json',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function menus()
     {
         return $this->hasMany(RestaurantMenu::class);

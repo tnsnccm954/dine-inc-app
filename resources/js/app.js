@@ -10,7 +10,14 @@ createInertiaApp({
         return pages[`./Pages/${name}.vue`];
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const appProps = {
+            render: () => h(App, props),
+            mounted() {
+                console.log("mounted");
+            },
+            // layout: layout ? layout : null,
+        };
+        createApp(appProps)
             .use(plugin)
             .mount(el);
     },

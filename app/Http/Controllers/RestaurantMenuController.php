@@ -11,7 +11,7 @@ class RestaurantMenuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function getAllRestaurantMenus(Request $request)
     {
         $qParams = $request->validate([
             'restaurant_id' => 'sometimes|exists:restaurants,id',
@@ -27,7 +27,7 @@ class RestaurantMenuController extends Controller
         return response()->json($menus);
     }
 
-    public function indexByRestaurant(Restaurant $restaurant, Request $request)
+    public function index(Request $request,Restaurant $restaurant)
     {
         $restaurantMenus = $restaurant->menus()->get();
         return response()->json($restaurantMenus);

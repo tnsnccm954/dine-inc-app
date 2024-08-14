@@ -56,13 +56,14 @@ class RestaurantService
                 $this->create($restaurant);
             }
         }
+        unset($restaurants['results']);
 
-
-        // return Restaurant::where('is_active', true)->get();
-        // return Restaurant::whereIn('place_id', $placeIds)->get();
-        return CacheHelper::remember('restaurants_service_query_'.CacheHelper::generateKey($params), null, function () use ($placeIds) {
+        $restaurants['results'] = CacheHelper::remember('RESTAURANT_SERVICE_QUERY_'.CacheHelper::generateKey($params), null, function () use ($placeIds) {
             return Restaurant::whereIn('place_id', $placeIds)->get(); 
         });
+        // return Restaurant::where('is_active', true)->get();
+        // return Restaurant::whereIn('place_id', $placeIds)->get();
+        return $restaurants;
     }
 }
 

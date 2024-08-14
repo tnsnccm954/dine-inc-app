@@ -41,6 +41,9 @@ class RestaurantController extends Controller
 
             'with_relationships' => 'sometimes|array|min:1',
             'with_relationships.*' => 'string|in:menus',
+
+            // 'page' => 'sometimes|integer',
+            'per_page' => 'sometimes|integer',
         ]);
 
         $lat = $params['lat'] ?? null;
@@ -50,6 +53,10 @@ class RestaurantController extends Controller
 
         $restaurants = $this->restaurantService->getNearbyRestaurants($params, $lat, $lng, $radius);
         // $response = $this->googleMapService->nearbySearch($lat, $lng, $radius, $params);
+
+        if(key_exists('with_relationships', $params)) {
+            $restaurants->each->load($params['with_relationships']);
+        }
 
         return response()->json($restaurants);
 

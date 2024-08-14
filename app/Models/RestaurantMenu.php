@@ -18,6 +18,12 @@ class RestaurantMenu extends Model
         'is_available',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
